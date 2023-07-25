@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: yolo-k8s-backend
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
