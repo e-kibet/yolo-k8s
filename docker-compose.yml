@@ -1,0 +1,49 @@
+version: '3'
+services:
+  frontend:
+    build: 
+      context: client
+      dockerfile: Dockerfile
+    container_name: yolo-k8s-frontend
+    image: yolo-k8s-frontend
+    depends_on:
+      - backend
+    stdin_open: true
+    ports:
+      - 3000:3000
+    networks:
+      yolo_network:
+        ipv4_address: 172.20.0.4
+  backend:
+    build: 
+      context: backend
+      dockerfile: Dockerfile
+    container_name: yolo-k8s-backend
+    image: yolo-k8s-backend
+    environment:
+      MONGODB_URI: 'mongodb://ekibet:ekibet@172.20.0.2:27017'
+      PORT: 5000
+    ports:
+      - 5000:5000
+    depends_on:
+      - mongo
+    networks:
+      yolo_network:
+        ipv4_address: 172.20.0.3
+  mongo:
+    image: mongo
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ekibet
+      MONGO_INITDB_ROOT_PASSWORD: ekibet
+    ports:
+      - 27017:27017
+    networks:
+      yolo_network:
+        ipv4_address: 172.20.0.2
+networks:
+  yolo_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
