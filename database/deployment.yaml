@@ -12,11 +12,18 @@ spec:
       labels:
         app: yolo-k8s-database
     spec:
+      volumes:
+        - name: database-volume
+          persistentVolumeClaim:
+            claimName: yolo-k8s-database-claim
       containers:
         - name: yolo-k8s-database
           image: mongo
           ports:
             - containerPort: 27017
+          volumeMounts:
+            - name: database-volume
+              mountPath: /data/db
           env:
             - name: MONGO_INITDB_ROOT_USERNAME
               valueFrom: 
