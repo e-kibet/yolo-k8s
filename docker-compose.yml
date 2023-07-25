@@ -1,11 +1,8 @@
 version: '3'
 services:
   frontend:
-    build: 
-      context: client
-      dockerfile: Dockerfile
     container_name: yolo-k8s-frontend
-    image: yolo-k8s-frontend
+    image: ekibet/yolo-k8s-frontend:1.0.0
     depends_on:
       - backend
     stdin_open: true
@@ -15,11 +12,8 @@ services:
       yolo_network:
         ipv4_address: 172.20.0.4
   backend:
-    build: 
-      context: backend
-      dockerfile: Dockerfile
     container_name: yolo-k8s-backend
-    image: yolo-k8s-backend
+    image: ekibet/yolo-k8s-backend:1.0.0
     environment:
       MONGODB_URI: 'mongodb://ekibet:ekibet@172.20.0.2:27017'
       PORT: 5000

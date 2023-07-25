@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yolo-k8s-backend-deployment
+spec:
+  selector:
+    matchLabels:
+      app: yolo-k8s-backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: yolo-k8s-backend
+    spec:
+      containers:
+        - name: yolo-k8s-backend
+          image: ekibet/yolo-k8s-backend:1.0.0
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MONGODB_URI
+              valueFrom: 
+                secretKeyRef:
+                  name: yolo-k8s-backend-secret
+                  key: MONGODB_URI

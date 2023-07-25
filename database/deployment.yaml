@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yolo-k8s-database-deployment
+spec:
+  selector:
+    matchLabels:
+      app: yolo-k8s-database
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: yolo-k8s-database
+    spec:
+      containers:
+        - name: yolo-k8s-database
+          image: mongo
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom: 
+                secretKeyRef:
+                  name: yolo-k8s-secret
+                  key: MONGO_INITDB_ROOT_USERNAME
+
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: yolo-k8s-secret
+                  key: MONGO_INITDB_ROOT_PASSWORD
